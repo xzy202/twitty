@@ -22,5 +22,7 @@ B. How to run it
 
    python manage.py runserver
 
+4. Your website is up 
+   check it out at  http://localhost:8000
 
 Enviroment : python 2.7.12 and Django (1, 10, 5, 'final', 0)
