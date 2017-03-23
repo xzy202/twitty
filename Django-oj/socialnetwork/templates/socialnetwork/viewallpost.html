@@ -1,0 +1,99 @@
+{% extends "socialnetwork/homepage.html" %}
+
+{% block user-info %}
+      <p>Hello, {{user.username}} </p>
+                    
+                {% if entry.picture %}
+                    <img class="profileimg" src="{% url 'photo' entry.id %}">
+                {% endif %}
+
+                <br><br><br>  <br><br><br>  <br><br><br> <br>
+                <li><p4>firstname:{{user.first_name}}<p4></li>
+                <li><p4>lastname:{{user.last_name}}<p4></li>
+                <li><p4>age:{{entry.age}}<p4></li>
+                <li><p4>bio:{{entry.bio}}<p4></li>
+
+
+    <br>    <br>  
+    <form method="get" action="{% url 'edit'%}">
+        <input type="submit" value="Edit My Profile">        
+        {% csrf_token %}
+    </form>
+
+    <form method="get" action="{% url 'home'%}">
+        {% csrf_token %}
+        <input type="submit" value="View All Posts">
+    </form>
+
+    <form method="get" action="{% url 'viewfollower'%}">
+        {% csrf_token %}
+        <input type="submit" value="My Follows">
+    </form>
+
+    <form action="{% url 'logout' %}" method="get">
+        <input type="submit" value="Logout">
+                {% csrf_token %}
+    </form> 
+
+
+{% endblock %}
+
+
+{% block content %}
+      {% for error in errors %}
+        <div class="error">
+            {{error}}
+        </div>
+      {% endfor %}
+
+      {% for error in formerrors.error %} {{error}} {% endfor %}
+      <form class="add-form" action="{% url 'addpost' %}" method="post">
+        {{addform}}
+
+        <input type="submit" name="POST" value="POST" id="postbtn" >
+        {% csrf_token %}
+      </form>    
+
+<!--                 <form class="delete-form" action="/socialnetwork/delete-item/{{item.id}}" method="POST">
+                    <button class="btn" type="submit">X</button>
+                    {% csrf_token %}
+                </form> -->
+<!--     <label>Make a Comment </label><input class="comment" id="input" type="text" name="item"> -->
+    
+
+    <div id="showpost">   
+        {% for item in items %} 
+            <li>    
+                    <div id="showpost{{item.id}}">
+                        {% if item.entry.picture %}
+                            <img class="viewprofile" src="{% url 'photo' item.entry.id %}">
+                        {% endif %}   
+                     <a href="{% url 'viewprofile' item.user.id %}">{{item.user.username}}</a> 
+                    <p1>{{item.timestamp}}</p1>      
+                    <br>                    
+                    <p>     <p2>{{item.text}}</p2>  </p>  <br>
+
+                    </div>
+                    <br>
+                    <br>
+                    <button id = "{{item.id}}" onclick="getComment( {{item.id}} )" >ViewCommts</button>
+                    <div id="comments{{item.id}}">
+                    </div>     
+                    <br>
+                    <input class="Addcomment" id="comment{{item.id}}" type="text" name="comment">
+                    <button id = {{item.id}} onclick="addComment( {{item.id}} ) ">AddCommts</button>     
+
+                    <span id="error" class="error"></span>
+
+            </li>
+
+        {% endfor %}
+    
+    </div>
+
+
+
+
+{% endblock %}
+
+

@@ -1,0 +1,34 @@
+{% extends "socialnetwork/viewallpost.html" %}
+
+
+{% block content %}
+    <h1>My Following:</h1>
+
+            {% for item in items %} 
+            <li>
+                	{% if item.entry.picture %}
+                            	<img class="viewprofile" src="{% url 'photo' item.entry.id %}">
+                	{% endif %}   
+                <a href="{% url 'viewprofile' item.user.id %}">{{item.user.username}}</a>
+                    	<p1>{{item.timestamp}}</p1>                          
+                <br>                       
+                <p>     
+                <p2>{{item.text}}</p2>      
+                </p>                   
+                <br>    
+
+                <br>
+                    <br>
+                    <button id = "{{item.id}}" onclick="getComment( {{item.id}} )" >ViewCommts</button>
+                    <div id="comments{{item.id}}">
+                    </div>     
+                    
+                    comment:<input class="Addcomment" id="comment{{item.id}}" type="text" name="comment">
+                    <button id = {{item.id}} onclick="addComment( {{item.id}} ) ">AddCommts</button>     
+
+                    <span id="error" class="error"></span>
+            </li> 
+
+          {% endfor %}
+{% endblock %}
+

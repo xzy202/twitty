@@ -1,0 +1,79 @@
+{% extends "socialnetwork/homepage.html" %}
+
+{% block user-info %}
+                {% if entry.picture %}
+                    <img class="profileimg" src="{% url 'photo' entry.id %}">
+                {% endif %}      
+                <br><br><br><br><br><br><br><br><br><br>
+                <li><p4>Username:{{user.username}}<p4></li>           
+                <li><p4>Firstname:{{user.first_name}}<p4></li>
+                <li><p4>Lastname:{{user.last_name}}<p4></li>
+                <li><p4>Age:{{entry.age}}<p4></li>
+                <li><p4>Bio:{{entry.bio}}<p4></li>
+
+      {% if master.id != user.id %}
+      <form class="follow/unfollow" action="{% url 'follow' user.id %}" method="POST">
+         <input type="submit" value="Follow">        
+        {% csrf_token %}
+      </form>
+
+      <form class="follow/unfollow" action="{% url 'unfollow' user.id %}" method="POST">
+        <input type="submit" value="Unfollow">        
+        {% csrf_token %}
+      </form>
+      {% endif %}
+
+
+    <form method="get" action="{% url 'home'%}">
+        {% csrf_token %}
+        <input type="submit" value="View All Posts">
+    </form>
+
+    <form method="get" action="{% url 'viewfollower'%}">
+        {% csrf_token %}
+        <input type="submit" value="My Follows">
+    </form>
+
+    <form action="{% url 'logout' %}" method="get">
+        <input type="submit" value="Logout">
+                {% csrf_token %}
+    </form> 
+
+
+
+{% endblock %}
+
+
+{% block content %}
+    <h1>Posts from {{user.username}}:</h1>
+
+
+            {% for item in items %} 
+            <li>
+
+                {% if item.entry.picture %}
+                            <img class="viewprofile" src="{% url 'photo' item.entry.id %}">
+                {% endif %}
+                <a href="{% url 'viewprofile' item.user.id %}">{{item.user.username}}</a>   
+                    <p1>{{item.timestamp}}</p1>                                  
+               <br>                     
+                <p>     
+                <p2>{{item.text}}</p2>      
+                </p>                   
+                <br>    
+
+                    <br>
+                    <br>
+                    <button id = "{{item.id}}" onclick="getComment( {{item.id}} )" >ViewCommts</button>
+                    <div id="comments{{item.id}}">
+                    </div>     
+                    
+                    comment:<input class="Addcomment" id="comment{{item.id}}" type="text" name="comment">
+                    <button id = {{item.id}} onclick="addComment( {{item.id}} ) ">AddCommts</button>     
+
+                    <span id="error" class="error"></span>
+
+
+            </li>
+          {% endfor %}
+{% endblock %}

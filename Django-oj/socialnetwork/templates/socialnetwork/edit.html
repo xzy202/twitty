@@ -1,0 +1,32 @@
+{% extends "socialnetwork/viewallpost.html" %}
+
+{% block content %}
+
+    {% for error in form.non_field_errors %}
+        <p3 style="color: red">
+            {{ error }}
+        </p3>
+    {% endfor %}
+
+    <h1>Edit your profile</h1>
+
+    <form enctype="multipart/form-data" method="post" action="{% url 'edit'%}">
+        <table>
+            {% for field in form %}
+                <tr>
+                    <td>{{field.label_tag}}</td>
+                    <td>{{field}}</td>
+                    <td class="error">
+                        {% for error in field.errors %} {{error}} {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% for field in form.hidden_fields %}
+            {{field}} {{field.errors}}
+        {% endfor %}
+        {% csrf_token %}
+        <input type="submit" class="editbtn" value="Update">
+    </form>
+
+{% endblock %}
